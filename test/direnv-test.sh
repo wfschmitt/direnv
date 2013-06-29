@@ -66,6 +66,13 @@ test_start "space dir"
   test "$SPACE_DIR" = "true"
 test_stop
 
+test_start "busybox-style"
+  ./direnv-dump >/dev/null
+  ./direnv-help >/dev/null
+  ./direnv-stdlib >/dev/null
+  ./direnv-hook bash >/dev/null
+test_stop
+
 # Context: foo/bar is a symlink to ../baz. foo/ contains and .envrc file
 # BUG: foo/bar is resolved in the .envrc execution context and so can't find
 #      the .envrc file.
@@ -85,3 +92,5 @@ test_stop
 #   NEW_LINK_TIME=`direnv file-mtime link-to-somefile`
 #   test "$LINK_TIME" = "$NEW_LINK_TIME"
 # test_stop
+
+echo Everything OK

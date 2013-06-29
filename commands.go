@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"strings"
 	"time"
 )
@@ -42,10 +43,15 @@ func CommandsDispatch(env Env, args []string) error {
 	var commandPrefix string
 	var commandArgs []string
 
-	if len(args) < 2 {
+	commandName = path.Base(args[0])
+	if len(commandName) > 7 && commandName[:7] == "direnv-" {
+		commandName = commandName[7:]
+		commandPrefix = "direnv"
+		commandArgs = args
+	} else if len(args) < 2 {
 		commandName = "help"
 		commandPrefix = args[0]
-		commandArgs = []string{}
+		commandArgs = []string{"direnv help"}
 	} else {
 		commandName = args[1]
 		commandPrefix = strings.Join(args[0:2], " ")
