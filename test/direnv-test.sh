@@ -11,8 +11,9 @@ unset DIRENV_BACKUP
 unset DIRENV_DIR
 unset DIRENV_MTIME
 
+eval `direnv hook bash`
 direnv_eval() {
-  eval `direnv export bash`
+  eval "$PROMPT_COMMAND"
 }
 
 test_start() {
@@ -65,6 +66,13 @@ test_start "space dir"
   direnv_eval
   test "$SPACE_DIR" = "true"
 test_stop
+
+OLD_PATH=$PATH
+test_start "broken-path"
+  direnv_eval
+  echo "PATH: $PATH"
+test_stop
+test "$PATH" = "$OLD_PATH"
 
 # Context: foo/bar is a symlink to ../baz. foo/ contains and .envrc file
 # BUG: foo/bar is resolved in the .envrc execution context and so can't find

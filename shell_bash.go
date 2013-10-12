@@ -1,11 +1,18 @@
 package main
 
+import (
+	"fmt"
+	"path/filepath"
+)
+
 type bash int
 
 var BASH bash
 
-func (b bash) Hook() string {
-	return `PROMPT_COMMAND="eval \"\$(direnv export bash)\";$PROMPT_COMMAND"`
+const BASH_HOOK = `PROMPT_COMMAND="eval \"\$(%s export bash)\";$PROMPT_COMMAND"`
+
+func (b bash) Hook(direnv string) string {
+	return fmt.Sprintf(BASH_HOOK, direnv)
 }
 
 func (b bash) Escape(str string) string {
@@ -18,4 +25,8 @@ func (b bash) Export(key, value string) string {
 
 func (b bash) Unset(key string) string {
 	return "unset " + b.Escape(key) + ";"
+}
+
+func (b bash) AbsPath() (string, error) {
+	return filepath.Abs("bash")
 }

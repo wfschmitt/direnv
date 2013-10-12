@@ -11,6 +11,7 @@ var CmdHook = &Cmd{
 	Args: []string{"SHELL"},
 	Fn: func(env Env, args []string) (err error) {
 		var target string
+		var config *Config
 
 		if len(args) > 1 {
 			target = args[1]
@@ -21,7 +22,11 @@ var CmdHook = &Cmd{
 			return fmt.Errorf("Unknown target shell '%s'", target)
 		}
 
-		fmt.Println(shell.Hook())
+		if config, err = LoadConfig(env); err != nil {
+			return
+		}
+
+		fmt.Println(shell.Hook(config.SelfPath))
 
 		return
 	},

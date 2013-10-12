@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
 )
 
@@ -9,12 +10,14 @@ type fish int
 
 var FISH fish
 
-func (f fish) Hook() string {
-	return `
+const FISH_HOOK = `
 function __direnv_export_eval --on-event fish_prompt;
-	eval (direnv export fish);
+eval (%s export fish);
 end
 `
+
+func (f fish) Hook(direnv string) string {
+	return fmt.Sprintf(FISH_HOOK, direnv)
 }
 
 func (f fish) Escape(str string) string {
@@ -107,4 +110,8 @@ func (f fish) Export(key, value string) string {
 
 func (f fish) Unset(key string) string {
 	return "set -e -g " + f.Escape(key) + ";"
+}
+
+func (f fish) AbsPath() (string, error) {
+	return filepath.Abs("fish")
 }

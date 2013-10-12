@@ -36,8 +36,8 @@ func LoadConfig(env Env) (config *Config, err error) {
 		err = fmt.Errorf("LoadConfig() Lookpath failed: %q", err)
 		return
 	}
-	if exePath, err = filepath.EvalSymlinks(exePath); err != nil {
-		err = fmt.Errorf("LoadConfig() symlink resolution: %q", err)
+	if exePath, err = filepath.Abs(exePath); err != nil {
+		err = fmt.Errorf("LoadConfig() abs path failed: %q", err)
 		return
 	}
 	config.SelfPath = exePath

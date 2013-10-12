@@ -9,10 +9,11 @@ import (
  * Shells
  */
 type Shell interface {
-	Hook() string
+	Hook(string) string
 	Escape(string) string
 	Export(key, value string) string
 	Unset(key string) string
+	AbsPath() (string, error)
 }
 
 func DetectShell(target string) Shell {
