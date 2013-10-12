@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const EXPORT_COMMAND = `eval "$("%s" stdlib)" >&2 && source_env "%s" >&2 && "%s" dump`
+
 // `direnv export $0`
 var CmdExport = &Cmd{
 	Name:    "export",
@@ -114,8 +116,7 @@ func loadRC(rc *RC, config *Config, env Env) (newEnv Env, err error) {
 		return nil, fmt.Errorf("%s is not allowed\n", rc.RelTo(config.WorkDir))
 	}
 
-	argtmpl := `eval "$("%s" stdlib)" >&2 && source_env "%s" >&2 && "%s" dump`
-	arg := fmt.Sprintf(argtmpl, config.SelfPath, rc.RelTo(config.WorkDir), config.SelfPath)
+	arg := fmt.Sprintf(EXPORT_COMMAND, config.SelfPath, rc.RelTo(config.WorkDir), config.SelfPath)
 	cmd := exec.Command(config.BashPath, "--noprofile", "--norc", "-c", arg)
 
 	cmd.Stderr = os.Stderr
