@@ -107,10 +107,10 @@ test_stop
 # Apparently, the CHDIR syscall does that so I don't know how to work around
 # the issue.
 #
-# test_start "symlink-bug"
-#   cd foo/bar
-#   direnv_eval
-# test_stop
+test_start "symlink-bug"
+  cd bar
+  direnv_eval
+test_stop
 
 # Pending: test that the mtime is looked on the original file
 # test_start "utils"

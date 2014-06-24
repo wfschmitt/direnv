@@ -56,6 +56,7 @@ func LoadConfig(env Env) (config *Config, err error) {
 		err = fmt.Errorf("LoadConfig() Getwd failed: %q", err)
 		return
 	}
+	log_error("WorkDir %s", config.WorkDir)
 
 	config.RCDir = env[DIRENV_DIR]
 	if len(config.RCDir) > 0 && config.RCDir[0:1] == "-" {
