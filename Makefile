@@ -18,6 +18,10 @@ build: direnv
 stdlib.go: stdlib.sh
 	cat $< | ./script/str2go main STDLIB $< > $@
 
+version.go: version.nix
+	echo package main > $@
+	echo const VERSION = `cat $<` >> $@
+
 direnv: stdlib.go *.go
 	go fmt
 	go build $(GO_FLAGS) -o direnv
