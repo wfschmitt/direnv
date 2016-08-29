@@ -1,9 +1,11 @@
+*.sw?
 .direnv
+/_book
 /direnv
 /direnv.test
 /dist
+/man/*.html
+/node_modules
 /site
 /test/allow
 /test/config/direnv/allow
-man/*.html
-*.sw?
